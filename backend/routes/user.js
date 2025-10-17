@@ -39,7 +39,7 @@ router.post('/adduser', async (req, res) => {
   const { name, email, phone, date_of_birth, profile_image_url } = req.body;
   try {
     const result = await db.query(
-      'INSERT INTO users (name, email, phone, dob, image_url) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      'INSERT INTO users (name, email, phone,  date_of_birth, profile_image_url) VALUES ($1, $2, $3, $4, $5) RETURNING *',
       [name, email, phone, date_of_birth, profile_image_url]
     );
     res.status(201).json(result.rows[0]);
@@ -61,7 +61,7 @@ router.put('/:id', async (req, res) => {
            email = $2,
            phone = $3,
            date_of_birth = $4,
-           image_url = $5
+           profile_image_url = $5
        WHERE id = $6
        RETURNING *`,
       [name, email, phone, date_of_birth, profile_image_url , userId]

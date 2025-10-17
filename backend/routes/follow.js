@@ -4,11 +4,11 @@ const db = require('../database');
 
 // FOLLOW a user
 router.post('/followuser', async (req, res) => {
-  const { follower_id, followed_id } = req.body;
+  const { follower_id, following_id } = req.body;
   try {
     const result = await db.query(
-      'INSERT INTO follows (follower_id, followed_id) VALUES ($1, $2) RETURNING *',
-      [follower_id, followed_id]
+      'INSERT INTO follows (follower_id, following_id) VALUES ($1, $2) RETURNING *',
+      [follower_id, following_id]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -19,13 +19,13 @@ router.post('/followuser', async (req, res) => {
 
 // UNFOLLOW a user
 router.delete('/unfollowuser', async (req, res) => {
-  const { follower_id, followed_id } = req.body;
+  const { follower_id, following_id } = req.body;
   try {
     await db.query(
-      'DELETE FROM follows WHERE follower_id = $1 AND followed_id = $2',
-      [follower_id, followed_id]
+      'DELETE FROM follows WHERE follower_id = $1 AND following_id = $2',
+      [follower_id, following_id]
     );
-    res.status(204).send();
+    res.status(204).send('User unfollowed successfully');
   } catch (err) {
     console.error('Error removing follow:', err);
     res.status(500).send('Server error');
