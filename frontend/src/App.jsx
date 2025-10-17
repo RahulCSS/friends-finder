@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import CreateUser from './pages/CreateUser';
 import EditUser from './pages/EditUser';
+import Connections from './pages/Connections';
 
 function App() {
   return (
@@ -11,9 +12,12 @@ function App() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between h-16">
               <div className="flex space-x-8">
-                <Link to="/" className="inline-flex items-center px-3 py-2 text-gray-700 hover:text-blue-600">
+                <a
+                  href="/"
+                  className="inline-flex items-center px-3 py-2 text-gray-700 hover:text-blue-600"
+                >
                   🏠 Dashboard
-                </Link>
+                </a>
                 <Link to="/create" className="inline-flex items-center px-3 py-2 text-gray-700 hover:text-blue-600">
                   ➕ Create User
                 </Link>
@@ -29,6 +33,7 @@ function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/create" element={<CreateUser />} />
             <Route path="/edit/:id" element={<EditUser />} />
+            <Route path="/view/:id" element={<Connections />} />
           </Routes>
         </main>
       </div>
