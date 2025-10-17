@@ -36,11 +36,11 @@ router.get('/getallusers', async (req, res) => {
 
 // Create a new user
 router.post('/adduser', async (req, res) => {
-  const { name, email, phone, dob, image_url } = req.body;
+  const { name, email, phone, date_of_birth, profile_image_url } = req.body;
   try {
     const result = await db.query(
       'INSERT INTO users (name, email, phone, dob, image_url) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-      [name, email, phone, dob, image_url]
+      [name, email, phone, date_of_birth, profile_image_url]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -52,7 +52,7 @@ router.post('/adduser', async (req, res) => {
 // Update user by Id
 router.put('/:id', async (req, res) => {
   const userId = req.params.id;
-  const { name, email, phone, dob, image_url } = req.body;
+  const { name, email, phone, date_of_birth, profile_image_url } = req.body;
 
   try {
     const result = await db.query(
@@ -60,11 +60,11 @@ router.put('/:id', async (req, res) => {
        SET name = $1,
            email = $2,
            phone = $3,
-           dob = $4,
+           date_of_birth = $4,
            image_url = $5
        WHERE id = $6
        RETURNING *`,
-      [name, email, phone, dob, image_url, userId]
+      [name, email, phone, date_of_birth, profile_image_url , userId]
     );
 
     if (result.rows.length === 0) {
