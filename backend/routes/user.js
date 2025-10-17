@@ -49,6 +49,41 @@ router.post('/adduser', async (req, res) => {
   }
 });
 
+// GET single user by ID
+router.get('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const query = `
+      SELECT 
+        u.id,
+        u.name,
+        u.email,
+        u.phone,
+        u.date_of_birth,
+        u.profile_image_url,
+        u.created_at,
+        u.updated_at,
+        COUNT(DISTINCT f1.follower_id) as followers_count,
+        COUNT(DISTINCT f2.following_id) as following_count
+      FROM users u
+      LEFT JOIN follows f1 ON u.id = f1.following_id
+      LEFT JOIN follows f2 ON u.id = f2.follower_id
+      WHERE u.id = $1
+      GROUP BY u.id, u.name, u.email, u.phone, u.date_of_birth, u.profile_image_url, u.created_at, u.updated_at
+    `;
+    const result = await dbpool.query(query, [id]);
+    
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error('Get user by ID error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Update user by Id
 router.put('/:id', async (req, res) => {
   const userId = req.params.id;
