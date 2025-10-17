@@ -23,7 +23,7 @@ function App() {
                 </Link>
               </div>
               <div className="flex items-center">
-                <span className="font-semibold text-gray-600">👥 User Management</span>
+                <span className="font-semibold text-gray-600">👥 Friends Finder</span>
               </div>
             </div>
           </div>
