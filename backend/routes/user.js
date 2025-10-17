@@ -126,11 +126,13 @@ router.get('/:id/following', async (req, res) => {
         u.phone,
         u.date_of_birth,
         u.profile_image_url,
-        f.created_at as followed_at
+        f.created_at AS followed_at,
+        (SELECT COUNT(*) FROM follows WHERE following_id = u.id) AS followers_count,
+        (SELECT COUNT(*) FROM follows WHERE follower_id = u.id) AS following_count
       FROM users u
       INNER JOIN follows f ON u.id = f.following_id
       WHERE f.follower_id = $1
-      ORDER BY f.created_at DESC
+      ORDER BY f.created_at DESC;
     `;
     
     const result = await db.query(query, [id]);
@@ -155,11 +157,13 @@ router.get('/:id/followers', async (req, res) => {
         u.phone,
         u.date_of_birth,
         u.profile_image_url,
-        f.created_at as followed_at
+        f.created_at AS followed_at,
+        (SELECT COUNT(*) FROM follows WHERE following_id = u.id) AS followers_count,
+        (SELECT COUNT(*) FROM follows WHERE follower_id = u.id) AS following_count
       FROM users u
       INNER JOIN follows f ON u.id = f.follower_id
       WHERE f.following_id = $1
-      ORDER BY f.created_at DESC
+      ORDER BY f.created_at DESC;
     `;
     
     const result = await db.query(query, [id]);
