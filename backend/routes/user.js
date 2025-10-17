@@ -133,7 +133,7 @@ router.get('/:id/following', async (req, res) => {
       ORDER BY f.created_at DESC
     `;
     
-    const result = await dbpool.query(query, [id]);
+    const result = await db.query(query, [id]);
     res.json(result.rows);
     
   } catch (error) {
@@ -162,7 +162,7 @@ router.get('/:id/followers', async (req, res) => {
       ORDER BY f.created_at DESC
     `;
     
-    const result = await dbpool.query(query, [id]);
+    const result = await db.query(query, [id]);
     res.json(result.rows);
     
   } catch (error) {
