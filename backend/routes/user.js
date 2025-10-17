@@ -113,5 +113,63 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+// GET users that current user is following
+router.get('/:id/following', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const query = `
+      SELECT 
+        u.id,
+        u.name,
+        u.email,
+        u.phone,
+        u.date_of_birth,
+        u.profile_image_url,
+        f.created_at as followed_at
+      FROM users u
+      INNER JOIN follows f ON u.id = f.following_id
+      WHERE f.follower_id = $1
+      ORDER BY f.created_at DESC
+    `;
+    
+    const result = await dbpool.query(query, [id]);
+    res.json(result.rows);
+    
+  } catch (error) {
+    console.error('Get following error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// GET followers of current user
+router.get('/:id/followers', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const query = `
+      SELECT 
+        u.id,
+        u.name,
+        u.email,
+        u.phone,
+        u.date_of_birth,
+        u.profile_image_url,
+        f.created_at as followed_at
+      FROM users u
+      INNER JOIN follows f ON u.id = f.follower_id
+      WHERE f.following_id = $1
+      ORDER BY f.created_at DESC
+    `;
+    
+    const result = await dbpool.query(query, [id]);
+    res.json(result.rows);
+    
+  } catch (error) {
+    console.error('Get followers error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 
 module.exports = router;
