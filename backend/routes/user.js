@@ -71,7 +71,7 @@ router.get('/:id', async (req, res) => {
       WHERE u.id = $1
       GROUP BY u.id, u.name, u.email, u.phone, u.date_of_birth, u.profile_image_url, u.created_at, u.updated_at
     `;
-    const result = await dbpool.query(query, [id]);
+    const result = await db.query(query, [id]);
     
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'User not found' });
