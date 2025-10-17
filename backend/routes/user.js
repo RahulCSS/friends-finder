@@ -5,7 +5,7 @@ const db = require('../database');
 // Get all users
 router.get('/allusers', async (req, res) => {
     try {
-        const result = await dbpool.query('SELECT * FROM users');
+        const result = await db.query('SELECT * FROM users');
         res.json(result.rows);
     } catch (err) {
         console.error(err);
@@ -27,7 +27,7 @@ router.get('/getallusers', async (req, res) => {
       GROUP BY u.id
       ORDER BY u.created_at DESC
     `;
-    const result = await dbpool.query(query);
+    const result = await db.query(query);
     res.json(result.rows);
   } catch (error) {
     res.status(500).json({ error: error.message });
