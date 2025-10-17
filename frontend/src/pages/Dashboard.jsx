@@ -29,20 +29,6 @@ function Dashboard() {
     }
   };
 
-  const handleDelete = async (userId) => {
-    if (!window.confirm('Are you sure you want to delete this user?')) {
-      return;
-    }
-
-    try {
-      await user.deleteUser(userId);
-      setUsers(users.filter(user => user.id !== userId));
-    } catch (err) {
-      alert('Failed to delete user');
-      console.error(err);
-    }
-  };
-
   const handleFollow = async (followingId) => {
     if (!selectedUserId) {
       alert('Please select a user first (click on any user card)');
@@ -56,7 +42,7 @@ function Dashboard() {
 
     try {
       await follow.followUser(selectedUserId, followingId);
-      fetchUsers(); // Refresh to update counts
+      fetchUsers(); 
     } catch (err) {
       if (err.response?.status === 400) {
         alert('Already following this user');
@@ -74,7 +60,7 @@ function Dashboard() {
 
     try {
       await follow.unfollowUser(selectedUserId, followingId);
-      fetchUsers(); // Refresh to update counts
+      fetchUsers(); 
     } catch (err) {
       alert('Failed to unfollow user');
     }
@@ -108,21 +94,8 @@ function Dashboard() {
         <h1 className="text-3xl font-bold text-gray-900">User Dashboard</h1>
         <p className="text-gray-600 mt-2">
           Total Users: {users.length}
-          {selectedUserId && (
-            <span className="ml-4 text-blue-600">
-              ⚡ Selected User ID: {selectedUserId}
-            </span>
-          )}
         </p>
       </div>
-
-      {selectedUserId && (
-        <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-          <p className="text-sm text-blue-800">
-            💡 <strong>Tip:</strong> Click "Follow" or "Unfollow" buttons on other user cards to manage following relationships for the selected user.
-          </p>
-        </div>
-      )}
 
       {users.length === 0 ? (
         <div className="text-center py-12 bg-white rounded-lg shadow">
@@ -143,7 +116,7 @@ function Dashboard() {
               isSelected={selectedUserId === user.id}
               onSelect={() => setSelectedUserId(user.id)}
               onEdit={() => navigate(`/edit/${user.id}`)}
-              onDelete={() => handleDelete(user.id)}
+              onView={() => navigate(`/view/${user.id}`)}
               onFollow={() => handleFollow(user.id)}
               onUnfollow={() => handleUnfollow(user.id)}
             />
