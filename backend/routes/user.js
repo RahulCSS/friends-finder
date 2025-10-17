@@ -2,6 +2,17 @@ const express = require('express');
 const router = express.Router();
 const db = require('../database');
 
+// Get all users
+router.get('/allusers', async (req, res) => {
+    try {
+        const result = await dbpool.query('SELECT * FROM users');
+        res.json(result.rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server error');
+    }
+});
+
 // Get all users with follower/following counts
 router.get('/getallusers', async (req, res) => {
   try {
